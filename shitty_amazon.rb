@@ -10,14 +10,15 @@ system("clear")
 
 class Book
 
-  def initialize(id, title, author, genre)
+  def initialize(id, title, author, genre, rating)
     @id = id
     @title = title
     @author = author
     @genre = genre
+    @rating = rating
   end
 
-  attr_accessor :id, :title, :author, :genre
+  attr_accessor :id, :title, :author, :genre, :rating
 
   def self.all #this points to all objects in itself (ie the class Book)
     ObjectSpace.each_object(self).to_a.reverse #This grabs every object from the Book class and puts it into an array
@@ -63,37 +64,37 @@ asimov = Author.new("Isaac Asimov")
 bradbury = Author.new("Ray Bradbury")
 
 # romance books
-Book.new("1", "The Next Always", roberts, romance)
-Book.new("2", "Playing the Odds", roberts, romance)
-Book.new("3", "One man's art", roberts, romance)
-Book.new("4", "Pride and Prejudice", austen, romance)
-Book.new("5", "Emma", austen, romance)
-Book.new("6", "Persuasion", austen, romance)
-Book.new("7", "Shadow Dance", garwood, romance)
-Book.new("8", "Shadow Music", garwood, romance)
-Book.new("9", "The Lion's Lady", garwood, romance)
+Book.new("1", "The Next Always", roberts, romance, 4.1)
+Book.new("2", "Playing the Odds", roberts, romance, 4)
+Book.new("3", "One man's art", roberts, romance, 4)
+Book.new("4", "Pride and Prejudice", austen, romance, 4.2)
+Book.new("5", "Emma", austen, romance, 4)
+Book.new("6", "Persuasion", austen, romance, 4.1)
+Book.new("7", "Shadow Dance", garwood, romance, 4)
+Book.new("8", "Shadow Music", garwood, romance, 3.9)
+Book.new("9", "The Lion's Lady", garwood, romance, 4.2)
 
 # fantasy books
-Book.new("1", "The Hobbit", tolkien, fantasy)
-Book.new("2", "The Lord of the Rings", tolkien, fantasy)
-Book.new("3", "The Two Towers", tolkien, fantasy)
-Book.new("4", "Game of Thrones", martin, fantasy)
-Book.new("5", "Clash of Kings", martin, fantasy)
-Book.new("6", "Winds of Winter", martin, fantasy)
-Book.new("7", "The Shining", king, fantasy)
-Book.new("8", "Carrie", king, fantasy)
-Book.new("9", "Misery", king, fantasy)
+Book.new("1", "The Hobbit", tolkien, fantasy, 4.2)
+Book.new("2", "The Lord of the Rings", tolkien, fantasy, 4.5)
+Book.new("3", "The Two Towers", tolkien, fantasy, 4.4)
+Book.new("4", "Game of Thrones", martin, fantasy, 4.4)
+Book.new("5", "Clash of Kings", martin, fantasy, 4.4)
+Book.new("6", "Dance of Dragons", martin, fantasy, 4.3)
+Book.new("7", "The Shining", king, fantasy, 4.2)
+Book.new("8", "Carrie", king, fantasy, 3.9)
+Book.new("9", "Misery", king, fantasy, 4.1)
 
 # scifi books
-Book.new("1", "A Scanner Darkly", dick, scifi)
-Book.new("2", "The Man in the High Castle", dick, scifi)
-Book.new("3", "A Maze of Death", dick, scifi)
-Book.new("4", "Foundation", asimov, scifi)
-Book.new("5", "I Robot", asimov, scifi)
-Book.new("6", "The Caves of Steel", asimov, scifi)
-Book.new("7", "Fahrenheit 451", bradbury, scifi)
-Book.new("8", "The Martian Chronicles", bradbury, scifi)
-Book.new("9", "The Illustrated Man", bradbury, scifi)
+Book.new("1", "A Scanner Darkly", dick, scifi, 4)
+Book.new("2", "The Man in the High Castle", dick, scifi, 3.7)
+Book.new("3", "A Maze of Death", dick, scifi, 3.8)
+Book.new("4", "Foundation", asimov, scifi, 4.1)
+Book.new("5", "I Robot", asimov, scifi, 4.2)
+Book.new("6", "The Caves of Steel", asimov, scifi, 4.1)
+Book.new("7", "Fahrenheit 451", bradbury, scifi, 4)
+Book.new("8", "The Martian Chronicles", bradbury, scifi, 4.1)
+Book.new("9", "The Illustrated Man", bradbury, scifi, 4.1)
 
 def classification
   puts "Would you like [1] fantasy, [2] sci-fi, or [3] romance?"
@@ -105,6 +106,8 @@ def classification
         print a.id + " "
         print a.title + " by "
         puts a.author.name
+        print "rating: "
+        puts a.rating
         puts
       end # end if statement
     end # end book loop
@@ -331,7 +334,7 @@ def add_to_cart
       print a.title + " by "
       puts a.author.name
       puts
-      input = a.title + " " + a.author.name
+      input = a.title + " by " + a.author.name
       @shopping_cart << input
       puts "You have bought: "
       puts @shopping_cart
@@ -343,9 +346,22 @@ def add_to_cart
 
 end # end add_to_cart method
 
+def view_cart
+  if @shopping_cart.length == 0 # If shopping_cart array has nothing in it, the length will equal to 0
+    puts "You haven't bought anything yet"
+    puts
+    intro
+  else
+    puts "You have bought:"
+    puts @shopping_cart
+    puts
+    intro
+  end
+end
+
 # This method runs after listing all the available books
 def borrow
-  puts "Would you like borrow any of these books? [y/n]"
+  puts "Would you like to buy any of these books? [y/n]"
   user = gets.chomp.downcase
 
   loop do
@@ -368,7 +384,7 @@ end # end borrow method
 
 # This method is what you see first when the program runs
 def intro
-  puts "Would you like to browse by [1] genre, [2] author, see our [3] recommendation, or [4] exit?"
+  puts "Would you like to browse by [1] genre, [2] author, see our [3] recommendation, [4] see your shopping cart or [5] exit?"
   user = gets.chomp
 
 
@@ -387,6 +403,10 @@ def intro
         break
 
       when "4"
+        view_cart
+        break
+
+      when "5"
         puts
         puts "Thanks for using amaing Amazon\n\n"
         puts "Goodbye!\n\n"
