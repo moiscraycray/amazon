@@ -97,37 +97,29 @@ def classification
   puts "Would you like [1] fantasy, [2] sci-fi, or [3] romance?"
   user = gets.chomp
 
+  def printing_genre(title_genre)
+    Book.all.each do |a|
+      if a.genre.type == title_genre
+        print a.title + " by "
+        puts a.author.name
+        puts
+      end # end if statement
+    end # end book loop
+  end
+
   valid = 0
   while valid == 0
     case user
       when "1"
-        Book.all.each do |a|
-          if a.genre.type == "Fantasy"
-            print a.title + " by "
-            puts a.author.name
-            puts
-          end # end if statement
-        end # end book loop
+        printing_genre("Fantasy")
         break # this breaks the loop
 
       when "2"
-        Book.all.each do |a|
-          if a.genre.type == "Sci-fi"
-            print a.title + " by "
-            puts a.author.name
-            puts
-          end # end if statement
-        end # end book loop
+        printing_genre("Sci-fi")
         break
 
       when "3"
-        Book.all.each do |a|
-          if a.genre.type == "Romance"
-            print a.title + " by "
-            puts a.author.name
-            puts
-          end # end if statement
-        end # end book loop
+        printing_genre("Romance")
         break
 
       else
@@ -145,79 +137,51 @@ def writer
   puts "[7] Philip K. Dick    [8] Isaac Asimov         [9] Ray Bradbury"
   user = gets.chomp
 
+  def printing(book_writer)
+    Book.all.each do |a|
+      if a.author.name == book_writer
+        puts a.title
+      end # end if/else statement
+    end # end book array loop
+  end # end printing method
+
   valid = 0
   while valid == 0
     case user
       when "1"
-        Book.all.each do |a|
-          if a.author.name == "Nora Roberts"
-            puts a.title
-          end # end if/else statement
-        end # end book array loop
+        printing("Nora Roberts")
         break
 
       when "2"
-        Book.all.each do |a|
-          if a.author.name == "Jane Austen"
-            puts a.title
-          end # end if/else statement
-        end # end book array loop
+        printing("Jane Austen")
         break
 
       when "3"
-        Book.all.each do |a|
-          if a.author.name == "Julie Garwood"
-            puts a.title
-          end # end if/else statement
-        end # end book array loop
+        printing("Julie Garwood")
         break
 
       when "4"
-        Book.all.each do |a|
-          if a.author.name == "J.R.R. Tolkien"
-            puts a.title
-          end # end if/else statement
-        end # end book array loop
+        printing("J.R.R. Tolkien")
         break
 
       when "5"
-        Book.all.each do |a|
-          if a.author.name == "George R.R. Martin"
-            puts a.title
-          end # end if/else statement
-        end # end book array loop
+        printing("George R.R. Martin")
         break
 
       when "6"
-        Book.all.each do |a|
-          if a.author.name == "Stephen King"
-            puts a.title
-          end # end if/else statement
-        end # end book array loop
+        printing("Stephen King")
         break
 
       when "7"
-        Book.all.each do |a|
-          if a.author.name == "Julie Garwood"
-            puts a.title
-          end # end if/else statement
-        end # end book array loop
+        printing("Julie Garwood")
         break
 
       when "8"
-        Book.all.each do |a|
-          if a.author.name == "Isaac Asimov"
-            puts a.title
-          end # end if/else statement
-        end # end book array loop
+        printing("Isaac Asimov")
         break
 
       when "9"
-        Book.all.each do |a|
-          if a.author.name == "Ray Bradbury"
-            puts a.title
-          end # end if/else statement
-        end # end book array loop
+        printing("Ray Bradbury")
         break
 
       else
