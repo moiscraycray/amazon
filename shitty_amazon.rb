@@ -10,16 +10,18 @@ system("clear")
 
 class Book
 
-  def initialize(title, author, genre)
+  def initialize(id, title, author, genre)
+    @id = id
     @title = title
     @author = author
     @genre = genre
   end
 
-  attr_accessor :title, :author, :genre
+  attr_accessor :id, :title, :author, :genre
 
   def self.all #this points to all objects in itself (ie the class Book)
-    ObjectSpace.each_object(self).to_a #This grabs every object from the Book class and puts it into an array
+    ObjectSpace.each_object(self).to_a.reverse #This grabs every object from the Book class and puts it into an array
+    # .reverse was added because the order was reversed for some reason
   end
 end # end book class
 
@@ -61,37 +63,37 @@ asimov = Author.new("Isaac Asimov")
 bradbury = Author.new("Ray Bradbury")
 
 # romance books
-Book.new("The Next Always", roberts, romance)
-Book.new("Playing the Odds", roberts, romance)
-Book.new("One man's art", roberts, romance)
-Book.new("Pride and Prejudice", austen, romance)
-Book.new("Emma", austen, romance)
-Book.new("Persuasion", austen, romance)
-Book.new("Shadow Dance", garwood, romance)
-Book.new("Shadow Music", garwood, romance)
-Book.new("The Lion's Lady", garwood, romance)
+Book.new("1", "The Next Always", roberts, romance)
+Book.new("2", "Playing the Odds", roberts, romance)
+Book.new("3", "One man's art", roberts, romance)
+Book.new("4", "Pride and Prejudice", austen, romance)
+Book.new("5", "Emma", austen, romance)
+Book.new("6", "Persuasion", austen, romance)
+Book.new("7", "Shadow Dance", garwood, romance)
+Book.new("8", "Shadow Music", garwood, romance)
+Book.new("9", "The Lion's Lady", garwood, romance)
 
 # fantasy books
-Book.new("The Hobbit", tolkien, fantasy)
-Book.new("The Lord of the Rings", tolkien, fantasy)
-Book.new("The Two Towers", tolkien, fantasy)
-Book.new("Game of Thrones", martin, fantasy)
-Book.new("Clash of Kings", martin, fantasy)
-Book.new("Winds of Winter", martin, fantasy)
-Book.new("The Shining", king, fantasy)
-Book.new("Carrie", king, fantasy)
-Book.new("Misery", king, fantasy)
+Book.new("1", "The Hobbit", tolkien, fantasy)
+Book.new("2", "The Lord of the Rings", tolkien, fantasy)
+Book.new("3", "The Two Towers", tolkien, fantasy)
+Book.new("4", "Game of Thrones", martin, fantasy)
+Book.new("5", "Clash of Kings", martin, fantasy)
+Book.new("6", "Winds of Winter", martin, fantasy)
+Book.new("7", "The Shining", king, fantasy)
+Book.new("8", "Carrie", king, fantasy)
+Book.new("9", "Misery", king, fantasy)
 
 # scifi books
-Book.new("A Scanner Darkly", dick, scifi)
-Book.new("The Man in the High Castle", dick, scifi)
-Book.new("A Maze of Death", dick, scifi)
-Book.new("Foundation", asimov, scifi)
-Book.new("I Robot", asimov, scifi)
-Book.new("The Caves of Steel", asimov, scifi)
-Book.new("Fahrenheit 451", bradbury, scifi)
-Book.new("The Martian Chronicles", bradbury, scifi)
-Book.new("The Illustrated Man", bradbury, scifi)
+Book.new("1", "A Scanner Darkly", dick, scifi)
+Book.new("2", "The Man in the High Castle", dick, scifi)
+Book.new("3", "A Maze of Death", dick, scifi)
+Book.new("4", "Foundation", asimov, scifi)
+Book.new("5", "I Robot", asimov, scifi)
+Book.new("6", "The Caves of Steel", asimov, scifi)
+Book.new("7", "Fahrenheit 451", bradbury, scifi)
+Book.new("8", "The Martian Chronicles", bradbury, scifi)
+Book.new("9", "The Illustrated Man", bradbury, scifi)
 
 def classification
   puts "Would you like [1] fantasy, [2] sci-fi, or [3] romance?"
@@ -100,6 +102,7 @@ def classification
   def printing_genre(title_genre)
     Book.all.each do |a|
       if a.genre.type == title_genre
+        print a.id + " "
         print a.title + " by "
         puts a.author.name
         puts
@@ -107,26 +110,36 @@ def classification
     end # end book loop
   end
 
-  valid = 0
-  while valid == 0
+  loop do
     case user
       when "1"
-        printing_genre("Fantasy")
+        printing_genre("Fantasy") # This will call printing_genre method and pass "Fantasy" as title_genre
+        @cart_genre = "Fantasy" # This sets a variable used to check whether the book is "Fantasy" while looping through all the books
+        @cart_author = nil # This sets the author as nil; prevents the loop to return true if there's an author assigned from the writer method
+        @category = nil # This is the same as above; prevents the loop to return true if there's a genre/category assigned
         break # this breaks the loop
 
       when "2"
         printing_genre("Sci-fi")
+        @cart_genre = "Sci-fi"
+        @cart_author = nil
+        @category = nil
         break
 
       when "3"
         printing_genre("Romance")
+        @cart_genre = "Romance"
+        @cart_author = nil
+        @category = nil
         break
 
       else
         puts "I don't understand"
         user = gets.chomp
     end # end case statement
-  end # end while loop
+  end # end loop
+
+  borrow # calling the borrow method
 
 end # end classification method
 
@@ -140,55 +153,84 @@ def writer
   def printing(book_writer)
     Book.all.each do |a|
       if a.author.name == book_writer
+        print a.id + " "
         puts a.title
       end # end if/else statement
     end # end book array loop
   end # end printing method
 
-  valid = 0
-  while valid == 0
+  loop do
     case user
       when "1"
         printing("Nora Roberts")
+        @cart_author = "Nora Roberts"
+        @cart_genre = nil
+        @category = nil
         break
 
       when "2"
         printing("Jane Austen")
+        @cart_author = "Jane Austen"
+        @cart_genre = nil
+        @category = nil
         break
 
       when "3"
         printing("Julie Garwood")
+        @cart_author = "Julie Garwood"
+        @cart_genre = nil
+        @category = nil
         break
 
       when "4"
         printing("J.R.R. Tolkien")
+        @cart_author = "J.R.R. Tolkien"
+        @cart_genre = nil
+        @category = nil
         break
 
       when "5"
         printing("George R.R. Martin")
+        @cart_author = "George R.R. Martin"
+        @cart_genre = nil
+        @category = nil
         break
 
       when "6"
         printing("Stephen King")
+        @cart_author = "Stephen King"
+        @cart_genre = nil
+        @category = nil
         break
 
       when "7"
         printing("Julie Garwood")
+        @cart_author = "Julie Garwood"
+        @cart_genre = nil
+        @category = nil
         break
 
       when "8"
         printing("Isaac Asimov")
+        @cart_author = "Isaac Asimov"
+        @cart_genre = nil
+        @category = nil
         break
 
       when "9"
         printing("Ray Bradbury")
+        @cart_author = "Ray Bradbury"
+        @cart_genre = nil
+        @category = nil
         break
 
       else
         puts "I don't understand"
         user = gets.chomp
     end # end case statement
-  end # end while loop
+  end # end loop
+
+  borrow # calling the borrow method
 end # end writer method
 
 # This quiz method is used for recommending books to the user. It asks the user questions and
@@ -200,8 +242,7 @@ end # end writer method
 @romance = 0
 def quiz
 
-  valid = 0
-  while valid == 0
+  loop do
     case @input
       when "1"
         @fantasy += 1
@@ -219,7 +260,7 @@ def quiz
         puts "I don't understand"
         @input = gets.chomp
       end # end case statement
-  end # end while loop
+  end # end  loop
 
 end # end quiz method
 
@@ -256,43 +297,110 @@ def recommendation
   puts
 
   # This finds the genre with the highest tally and assign it as category
-  category = genre_array[tally_array.index(tally_array.max)]
-  puts category
+  @category = genre_array[tally_array.index(tally_array.max)]
+  puts @category
   puts
 
   # This array loop looks for books with the genre with the highest tally
   Book.all.each do |a|
-    if a.genre.type == category
+    if a.genre.type == @category
+      print a.id + " "
       print a.title + " by "
       puts a.author.name
       puts
     end
   end # end book array loop
 
+  borrow # calling the borrow method
+
 end # end recommendation method
+
+@shopping_cart = []
+
+# This method is called when users want to buy a book
+# This method adds the chosen book to the shopping_cart array
+def add_to_cart
+
+
+  puts "Which of these do you want? Please enter number"
+  user = gets.chomp
+
+  Book.all.each do |a|
+      if (a.id == user) && ((a.genre.type == @cart_genre) || (a.author.name == @cart_author) || (a.genre.type == @category))
+      print a.id + " "
+      print a.title + " by "
+      puts a.author.name
+      puts
+      input = a.title + " " + a.author.name
+      @shopping_cart << input
+      puts "You have bought: "
+      puts @shopping_cart
+      puts
+    end # end if statement
+  end # end book loop
+
+  intro
+
+end # end add_to_cart method
+
+# This method runs after listing all the available books
+def borrow
+  puts "Would you like borrow any of these books? [y/n]"
+  user = gets.chomp.downcase
+
+  loop do
+    case user
+      when "y"
+        add_to_cart
+        break
+
+      when "n"
+        intro
+        break
+
+      else
+        "I don't understand"
+        user = gets.chomp
+    end # end case statement
+  end # end loop
+
+end # end borrow method
+
+# This method is what you see first when the program runs
+def intro
+  puts "Would you like to browse by [1] genre, [2] author, see our [3] recommendation, or [4] exit?"
+  user = gets.chomp
+
+
+  loop do
+    case user
+      when "1"
+        classification
+        break
+
+      when "2"
+        writer
+        break
+
+      when "3"
+        recommendation
+        break
+
+      when "4"
+        puts
+        puts "Thanks for using amaing Amazon\n\n"
+        puts "Goodbye!\n\n"
+        break
+
+      else
+        puts "I don't understand"
+        user = gets.chomp
+    end # end case statement
+
+  end # end  loop
+
+end # end intro method
 
 # Program starts here
 puts "Hello, welcome to amazin Amazon!"
-puts "Would you like to browse by [1] genre, [2] author, or see our [3] recommendation?"
-user = gets.chomp
-
-valid = 0
-while valid == 0
-  case user
-    when "1"
-      classification
-      break
-
-    when "2"
-      writer
-      break
-
-    when "3"
-      recommendation
-      break
-
-    else
-      puts "I don't understand"
-      user = gets.chomp
-  end # end case statement
-end # end while loop
+intro # call intro method
