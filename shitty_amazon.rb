@@ -142,6 +142,7 @@ def classification
     end # end case statement
   end # end loop
 
+  #talk # calling the talk method
   borrow # calling the borrow method
 
 end # end classification method
@@ -276,7 +277,7 @@ def recommendation
   puts "[1] dragons, [2] spaceships, [3] a hot guy/chick"
   @input = gets.chomp
   quiz
-  puts "Which one is your favourite"
+  puts "Which one is your favourite thing?"
   puts "[1] broomstick, [2] aliens, [3] kissing"
   @input = gets.chomp
   quiz
@@ -284,8 +285,8 @@ def recommendation
   puts "[1] elf, [2] astronaut, [3] damsel"
   @input = gets.chomp
   quiz
-  puts "When you die, where do you want to go"
-  puts "[1] dungeon, [2] space, [3] bed ;)"
+  puts "What is your favourite place?"
+  puts "[1] dungeon, [2] outer space, [3] bed ;)"
   @input = gets.chomp
   quiz
 
@@ -358,6 +359,20 @@ def view_cart
     intro
   end
 end
+
+# def talk
+#   puts "Would you like to hear a short description on any of these books? [y/n]"
+#   user = gets.chomp
+#
+#   loop do
+#     case user
+#     when "y"
+#     when "n"
+#     else
+#       puts "I don't understand"
+#       user = gets.chomp
+#   end # end loop
+# end # end talk method
 
 # This method runs after listing all the available books
 def borrow
